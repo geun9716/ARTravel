@@ -4,6 +4,32 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 
 import routes from './routes/api/index'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+
+// Swagger definition
+// You can set every attribute except paths and swagger
+// https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md
+const swaggerDefinition = {
+  info: { // API informations (required)
+    title: 'Auth Service', // Title (required)
+    version: '1.0.0', // Version (required)
+    description: 'Auth API' // Description (optional)
+  },
+  host: 'localhost:8080', // Host (optional)
+  basePath: '/' // Base path (optional)
+};
+
+// Options for the swagger docs
+const options = {
+  // Import swaggerDefinitions
+  swaggerDefinition,
+  // Path to the API docs
+  apis: ['./routes/swagger/*.js']
+};
+
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+const swaggerSpec = swaggerJSDoc(options);
 
 var app = express();
 
@@ -16,6 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', routes);
 
 // catch 404 and forward to error handler
