@@ -11,3 +11,9 @@ This is AR Travel App
 7. 깃 저장소의 Pull requests 탭에서 Compare & pull request 클릭
 8. 팀원과 회의 후 Merge
 9. git branch -D 기능_이름 (생성된 브랜치 삭제)
+
+
+## App
+### Version
+- React Native: 0.59.3
+- Node.js: 12.10.0
