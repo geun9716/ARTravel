@@ -1,0 +1,9 @@
+{
+    "development" : {
+        "host" : "localhost",
+        "user" : "sshworld",
+        "password" : "tjdgjs1218",
+        "database" : "testProject",
+        "dialect" : "mysql"
+    }
+}
