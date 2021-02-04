@@ -4,8 +4,7 @@ import security from '../middleware/security'
 
 // 게시글 조회
 async function getAll (req, res) {
-    console.log(req);
-
+    // console.log(req);
     try {
         let postInfo = await db.query('select * from posts', []);
         
@@ -58,8 +57,7 @@ async function createPost(req, res) {
 
         if(postInfo.affectedRows > 0){
             const returnObj = {
-                message : 'Success post',
-                postInfo : postInfo
+                message : 'Success post'
             }
             res.status(httpStatus.OK).send(returnObj)
         } else{
@@ -86,7 +84,6 @@ async function updatePost(req, res) {
         if(postInfo.affectedRows > 0){
             const returnObj = {
                 message : 'Success update',
-                postInfo : postInfo
             }
             res.status(httpStatus.OK).send(returnObj)
         } else{
@@ -102,12 +99,10 @@ async function deletePost(req, res) {
     let id = req.params.id;
     try {
         let postInfo = await db.query('delete from posts where postID = ?', [id]);
-        console.log(postInfo);
 
         if(postInfo.affectedRows > 0){
             const returnObj = {
                 message : 'Success delete',
-                postInfo : postInfo
             }
             res.status(httpStatus.OK).send(returnObj)
         } else{
