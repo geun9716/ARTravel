@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express'
+const router = express.Router();
+import like from '../../controller/like'
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('This is like api');
-});
+// 좋아요 누르기
+router.get('/isLike/:userId/:postId', like.isLike)
 
-module.exports = router;
+// 좋아요 취소
+router.get('disLike/:userId/:postId', like.disLike)
+
+export default router;
