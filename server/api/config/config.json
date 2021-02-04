@@ -1,6 +1,6 @@
 {
     "development" : {
-        "host" : "arsns-db.cqdz8o1pfofy.ap-northeast-2.rds.amazonaws.com",
+        "host" : "artravel-db.cqdz8o1pfofy.ap-northeast-2.rds.amazonaws.com",
         "user" : "admin",
         "password" : "arsns123",
         "database" : "ARTravel"
