@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
-import user from '../../controller/user'
 
 /* GET users listing. */
-router.get('/', user.login)
+router.get('/', function(req, res, next) {
+  res.send('this is tour api');
+});
 
 module.exports = router;

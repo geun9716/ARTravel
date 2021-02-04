@@ -5,11 +5,12 @@ import security from '../middleware/security'
 // 로그인
 async function login(req, res) {
     try {
+        let userInfo = await db.query('select * from users', [])
 
-        
-
-        if(userData.length > 0){
-
+        if(userInfo.length > 0){
+            const returnObj = {
+                userInfo : userInfo
+            }
             res.status(httpStatus.OK).send(returnObj)
         } else{
             res.status(httpStatus.NOT_FOUND).send()
