@@ -39,13 +39,13 @@ export default class HelloWorldSceneAR extends Component {
 
   render() {
     return (
-      <ViroARScene onTrackingInitialized={this._onInitialized} >
+      <ViroARScene onTrackingUpdated={this._onInitialized} >
 
-        <ViroText text={this.state.text} scale={[.2,2,.2]} position={[0, -2, -5]} style={styles.helloWorldTextStyle} />
+        {/* <ViroText text={this.state.text} scale={[.2,2,.2]} position={[0, -2, -5]} style={styles.helloWorldTextStyle} />
         <ViroText text="North Text" scale={[3, 3, 3]} transformBehaviors={["billboard"]} position={[this.state.northPointX, 0, this.state.northPointZ]} style={styles.helloWorldTextStyle} />
         <ViroText text="South Text" scale={[3, 3, 3]} transformBehaviors={["billboard"]} position={[this.state.southPointX, 0, this.state.southPointZ]} style={styles.helloWorldTextStyle} />
         <ViroText text="West Text" scale={[3, 3, 3]} transformBehaviors={["billboard"]} position={[this.state.westPointX, 0, this.state.westPointZ]} style={styles.helloWorldTextStyle} />
-        <ViroText text="East Text" scale={[3, 3, 3]} transformBehaviors={["billboard"]} position={[this.state.eastPointX, 0, this.state.eastPointZ]} style={styles.helloWorldTextStyle} />
+        <ViroText text="East Text" scale={[3, 3, 3]} transformBehaviors={["billboard"]} position={[this.state.eastPointX, 0, this.state.eastPointZ]} style={styles.helloWorldTextStyle} /> */}
 
         <ViroAmbientLight color={"#aaaaaa"} influenceBitMask={1} />
 
@@ -58,7 +58,7 @@ export default class HelloWorldSceneAR extends Component {
             type="OBJ"
             resources={[require('../../assets/heart-t.mtl')]}
             onClick={this._onClick}
-            materials={["white_sphere"]}/>
+            materials={["blue_sphere"]}/>
           <ViroQuad
             rotation={[-90,0,0]}
             width={.5} height={.5}
@@ -92,15 +92,13 @@ export default class HelloWorldSceneAR extends Component {
             type="OBJ"
             resources={[require('../../assets/bag-t.mtl')]}
             onClick={this._onClick}
-            materials={["white_sphere"]}/>
+            materials={["black_sphere"]}/>
           <ViroQuad
             rotation={[-90,0,0]}
             width={.5} height={.5}
             arShadowReceiver={true}
             lightReceivingBitMask={4} />
         </ViroNode>
-
-
       </ViroARScene>
     );
   }
@@ -169,9 +167,17 @@ ViroMaterials.createMaterials({
   grid: {
     diffuseTexture: require('./res/grid_bg.jpg'),
   },
-  white_sphere: {
+  blue_sphere: {
     lightingModel: "PBR",
     diffuseColor: "#0D66CE",
+  },
+  black_sphere: {
+    lightingModel: "PBR",
+    diffuseColor: "#000000",
+  },
+  white_sphere: {
+    lightingModel: "PBR",
+    diffuseColor: "#FFFFFF",
   },
 });
 
