@@ -6,12 +6,21 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { routeNames } from './constants';
 import FeedScreen from './screens/FeedScreen';
-import PostScreen from './screens/PostScreen';
+import PickScreen from './screens/PickScreen';
+import SubmitScreen from './screens/SubmitScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AuthScreen from './screens/AuthScreen';
+import PostScreen from './screens/PostScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const PostingStack = () => (
+  <Stack.Navigator initialRouteName={routeNames.PICK} headerMode='none'>
+    <Stack.Screen name={routeNames.PICK} component={PickScreen} />
+    <Stack.Screen name={routeNames.SUBMIT} component={SubmitScreen} />
+  </Stack.Navigator>
+);
 
 const MainTab = () => (
   <Tab.Navigator
@@ -20,9 +29,9 @@ const MainTab = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === routeNames.FEED) {
+        if (route.name === routeNames.POSTING) {
           iconName = !focused ? 'earth' : 'earth-outline';
-        } else if (route.name === routeNames.POST) {
+        } else if (route.name === routeNames.FEED) {
           iconName = !focused ? 'add-circle-outline' : 'add-circle';
         } else if (route.name === routeNames.PROFILE) {
           iconName = !focused ? 'person-circle-outline' : 'person-circle';
@@ -34,10 +43,12 @@ const MainTab = () => (
     tabBarOptions={{
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
+      showLabel: false,
     }}
+    backBehavior='order'
   >
+    <Tab.Screen name={routeNames.POSTING} component={PostingStack} />
     <Tab.Screen name={routeNames.FEED} component={FeedScreen} />
-    <Tab.Screen name={routeNames.POST} component={PostScreen} />
     <Tab.Screen name={routeNames.PROFILE} component={ProfileScreen} />
   </Tab.Navigator>
 );
@@ -46,6 +57,7 @@ const MainStack = () => (
   <Stack.Navigator initialRouteName={routeNames.AUTH} headerMode='none'>
     <Stack.Screen name={routeNames.AUTH} component={AuthScreen} />
     <Stack.Screen name={routeNames.MAIN_TAB} component={MainTab} />
+    <Stack.Screen name={routeNames.POST} component={PostScreen} />
   </Stack.Navigator>
 );
 

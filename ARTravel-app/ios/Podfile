@@ -15,6 +15,11 @@ target 'ARTravel' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
   pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
 
 end

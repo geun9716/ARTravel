@@ -1,20 +1,15 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import Screen from '../components/Screen';
+import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: {},
 });
 
 const PostScreen = () => {
   return (
-    <Screen style={styles.container}>
-      <Text>Post Screen</Text>
-    </Screen>
+    <View style={styles.container}>
+      <Text>test</Text>
+    </View>
   );
 };
 

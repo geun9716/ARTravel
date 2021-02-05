@@ -3,6 +3,9 @@ package com.artravel;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.horcrux.svg.SvgPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
@@ -31,6 +34,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CameraRollPackage(),
+            new ImagePickerPackage(),
+            new SvgPackage(),
             new RNFusedLocationPackage(),
             new VectorIconsPackage(),
             new RNScreensPackage(),
