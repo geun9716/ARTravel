@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import Axios from '../../modules/ApiClient';
+import ApiClient from '../../modules/ApiClient';
 import {StyleSheet, View} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {
@@ -42,11 +42,7 @@ export default class HelloWorldSceneAR extends Component {
       async (position) => {
         let gps = position.coords
         this.setState({lat_mobile : gps.latitude , long_mobile : gps.longitude});
-
-        console.log(this.state.lat_mobile);
-        console.log(this.state.long_mobile);
-
-        await Axios.get(`http://15.164.218.93/api/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
+        ApiClient.get(`/api/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
           .then(response => {
             console.log(response.data.postInfo);
             this.setState({posts:response.data.postInfo});
@@ -70,7 +66,6 @@ export default class HelloWorldSceneAR extends Component {
 
         {this.state.posts.map((val, index) => {
           let point = this._transformPointToAR(val.latitude, val.longitude);
-          console.log(val);
           return (
             <ViroNode
               key = {index}
