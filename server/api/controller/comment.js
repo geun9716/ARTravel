@@ -23,10 +23,15 @@ async function comment(req, res) {
 
         await db.query('update comments set groupNum = ? where commentID = ?', [groupNum, groupNum])
 
+        let postInfo = await db.query('select * from posts where postID = ?', [postId]);
+        let commentInfo = await db.query('select commentID, c.userID, (select nickname from users u where u.userID = c.userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments c where postID = ? order by groupNum asc', [userId, postId])
+
         res.status(httpStatus.OK).send({
             success : true,
-            message : "comment successfully"
+            postInfo : postInfo,
+            commentInfo : commentInfo
         })
+
 
     } catch (error) {
         console.error(error, "comment api error")
@@ -54,9 +59,13 @@ async function comments(req, res) {
             groupNum : commentId
         })
 
+        let postInfo = await db.query('select * from posts where postID = ?', [postId]);
+        let commentInfo = await db.query('select commentID, c.userID, (select nickname from users u where u.userID = c.userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments c where postID = ? order by groupNum asc', [userId, postId])
+
         res.status(httpStatus.OK).send({
             success : true,
-            message : "comments successfully"
+            postInfo : postInfo,
+            commentInfo : commentInfo
         })
 
     } catch (error) {
@@ -70,11 +79,17 @@ async function updateComment(req, res) {
         const commentId = req.params.commentId
         const updateComment = req.body.comment
 
+        let comment = await db.query('select * from comments where commentID = ?', [commentId])
+
         await db.query('update comments set comment = ? where commentID = ?', [updateComment, commentId])
+
+        let postInfo = await db.query('select * from posts where postID = ?', [comment[0].postID]);
+        let commentInfo = await db.query('select commentID, c.userID, (select nickname from users u where u.userID = c.userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments c where postID = ? order by groupNum asc', [comment[0].userID, comment[0].postID])
 
         res.status(httpStatus.OK).send({
             success : true,
-            message : "update comment successfully"
+            postInfo : postInfo,
+            commentInfo : commentInfo
         })
         
     } catch (error) {
@@ -87,21 +102,25 @@ async function deleteComment(req, res) {
     try {
         const commentId = req.params.commentId
 
-        let isComment = ('select class from comments where commentID = ?', [commentId])
+        let comment = await db.query('select * from comments where commentID = ?', [commentId])
 
-        if(isComment[0].class == 0) {
+        if(comment[0].class == 0) {
             await db.query('delete from comments where groupNum = ?', [commentId])
         } else {
             await db.query('delete from comments where commentID = ?', [commentId])
         }
         
+        let postInfo = await db.query('select * from posts where postID = ?', [comment[0].postID]);
+        let commentInfo = await db.query('select commentID, c.userID, (select nickname from users u where u.userID = c.userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments c where postID = ? order by groupNum asc', [comment[0].userID, comment[0].postID])
+
         res.status(httpStatus.OK).send({
             success : true,
-            message : "update comment successfully"
+            postInfo : postInfo,
+            commentInfo : commentInfo
         })
         
     } catch (error) {
-        console.error(error, "update comment api error")
+        console.error(error, "delete comment api error")
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send([])
     }
 }
@@ -112,7 +131,7 @@ async function showComment(req, res) {
         const userId = req.query.userId
         const postId = req.query.postId
 
-        let postInfo = await db.query('select commentID, userID, (select nickname from users where userID = userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments where postID = ? order by groupNum desc', [userId, postId])
+        let postInfo = await db.query('select commentID, c.userID, (select nickname from users u where u.userID = c.userID) AS nickname, class, seq, groupNum, comment, if(userID = ?, true, false) AS myComment from comments c where postID = ? order by groupNum asc', [userId, postId])
 
         res.status(httpStatus.OK).send(postInfo)
 

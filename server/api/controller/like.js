@@ -1,5 +1,6 @@
 import db from '../middleware/db'
 import httpStatus from 'http-status-codes'
+import post from './post'
 
 async function isLike(req, res) {
     try {
@@ -7,38 +8,25 @@ async function isLike(req, res) {
         const userId = req.params.userId
         const postId = req.params.postId
 
-        await db.query('insert into likes set ?', {
+        let liked = await db.query('insert into likes set ?', {
             userId : userId,
             postId : postId
         })
 
-        await db.query('update posts set likeCount = likeCount + 1 where postID = ?',[postId])
+        if(!liked.errno) {
+            await db.query('update posts set likeCount = likeCount + 1 where postID = ?',[postId])
+            req.params.id = postId
+            post.getPost(req, res)
+        } else {
+            await db.query('delete from likes where userID = ? AND postID = ?',[userId, postId])
+            await db.query('update posts set likeCount = likeCount - 1 where postID = ?',[postId])
+            req.params.id = postId
+            post.getPost(req, res)
+        }
 
-        res.status(httpStatus.OK).send({
-            success : true,
-            message : "Register user information successfully"
-        })
-
-    } catch (error) {
-        console.error(error, "signUp api error")
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).send([])
-    }
-}
-
-async function disLike(req, res) {
-    try {
         
-        const userId = req.params.userId
-        const postId = req.params.postId
 
-        await db.query('delete from likes where userID = ? AND postID = ?',[userId, postId])
-
-        await db.query('update posts set likeCount = likeCount - 1 where postID = ?',[postId])
-
-        res.status(httpStatus.OK).send({
-            success : true,
-            message : "Register user information successfully"
-        })
+        
 
     } catch (error) {
         console.error(error, "signUp api error")
@@ -47,6 +35,5 @@ async function disLike(req, res) {
 }
 
 export default {
-    isLike,
-    disLike
+    isLike
 }
