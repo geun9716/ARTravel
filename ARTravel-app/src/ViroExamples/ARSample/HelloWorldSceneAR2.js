@@ -27,15 +27,16 @@ export default class HelloWorldSceneAR extends Component {
       long_mobile : 0.0,
       posts : [],
     };
-
-
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
     this._latLongToMerc = this._latLongToMerc.bind(this);
     this._transformPointToAR = this._transformPointToAR.bind(this);
   }
 
-
+  //Arrays
+  objList = [require('../../assets/bag-t.obj'), require('../../assets/cam-t.obj'), require('../../assets/heart-t.obj')];
+  mtlList = [require('../../assets/bag-t.mtl'), require('../../assets/cam-t.mtl'), require('../../assets/heart-t.mtl')];
+  colorList = ["blue_sphere", "white_sphere", "black_sphere"];
   componentDidMount = () => {
     Geolocation.getCurrentPosition(
       async (position) => {
@@ -77,11 +78,11 @@ export default class HelloWorldSceneAR extends Component {
               scale={[.15, .15, .15]}
               animation={{name: "rotate", run: true, loop: true}}>
               <Viro3DObject
-                source={require()}
+                source={this.objList[val.categoryID-1]}
                 type="OBJ"
-                resources={[require('../../assets/heart-t.mtl')]}
-                onClick={this._onClick}
-                materials={["blue_sphere"]}/>
+                resources={[this.mtlList[val.categoryID-1]]}
+                onClick={()=>{this._onClick(val.postID)}}
+                materials={[this.colorList[val.categoryID-1]]}/>
               <ViroQuad
                 rotation={[-90,0,0]}
                 width={.5} height={.5}
@@ -90,59 +91,6 @@ export default class HelloWorldSceneAR extends Component {
             </ViroNode>
           );
         })}
-
-
-
-        {/* <ViroNode
-          position={[0, 0, -1]}
-          scale={[.15, .15, .15]}
-          animation={{name: "rotate", run: true, loop: true}}>
-          <Viro3DObject
-            source={require('../../assets/bag-t.obj')}
-            type="OBJ"
-            resources={[require('../../assets/bag-t.mtl')]}
-            onClick={this._onClick}
-            materials={["blue_sphere"]}/>
-          <ViroQuad
-            rotation={[-90,0,0]}
-            width={.5} height={.5}
-            arShadowReceiver={true}
-            lightReceivingBitMask={4} />
-        </ViroNode>
-        
-        <ViroNode
-          position={[.5, 0, -1]}
-          scale={[.15, .15, .15]}
-          animation={{name: "rotate", run: true, loop: true}}>
-          <Viro3DObject
-            source={require('../../assets/cam-t.obj')}
-            type="OBJ"
-            resources={[require('../../assets/cam-t.mtl')]}
-            onClick={this._onClick}
-            materials={["white_sphere"]}/>
-          <ViroQuad
-            rotation={[-90,0,0]}
-            width={.5} height={.5}
-            arShadowReceiver={true}
-            lightReceivingBitMask={4} />
-        </ViroNode>
-
-        <ViroNode
-          position={[-.5, 0, -1]}
-          scale={[.15, .15, .15]}
-          animation={{name: "rotate", run: true, loop: true}}>
-          <Viro3DObject
-            source={require('../../assets/bag-t.obj')}
-            type="OBJ"
-            resources={[require('../../assets/bag-t.mtl')]}
-            onClick={this._onClick}
-            materials={["black_sphere"]}/>
-          <ViroQuad
-            rotation={[-90,0,0]}
-            width={.5} height={.5}
-            arShadowReceiver={true}
-            lightReceivingBitMask={4} />
-        </ViroNode> */}
       </ViroARScene>
     )
   }
@@ -176,9 +124,10 @@ export default class HelloWorldSceneAR extends Component {
     return ({ x: newObjX, z: -newObjY });
   }
 
-  _onClick(){
-    console.log('hello world');
-    alert('hello world!');
+  _onClick(postID){
+    alert('postID : '+postID);
+    //게시물 Screen 이동 필요
+    
   }
 }
 
