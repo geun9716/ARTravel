@@ -16,7 +16,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', tour.getTourAll);
-router.get('/:id', tour.getTour);
+router.get('/select', tour.getTour);
 router.post('/', tour.createTour);
 router.put('/:id', tour.updateTour);
 router.delete('/:id', tour.deleteTour);
