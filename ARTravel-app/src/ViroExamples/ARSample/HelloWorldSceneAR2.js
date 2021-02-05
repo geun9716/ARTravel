@@ -72,6 +72,8 @@ export default class HelloWorldSceneAR extends Component {
 
         <ViroAmbientLight color={"#aaaaaa"} influenceBitMask={1} />
 
+        
+
         <ViroNode
           position={[0, 0, -1]}
           scale={[.15, .15, .15]}
