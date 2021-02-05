@@ -4,6 +4,9 @@ export const routeNames = {
   MAIN_STACK: 'MAIN_STACK',
   MAIN_TAB: 'MAIN_TAB',
   FEED: 'FEED',
+  POSTING: 'POSTING',
+  PICK: 'PICK',
+  SUBMIT: 'SUBMIT',
   POST: 'POST',
   PROFILE: 'PROFILE',
 };

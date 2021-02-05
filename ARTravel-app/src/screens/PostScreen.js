@@ -1,43 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet, Image } from 'react-native';
-
-import Screen from '../components/Screen';
-import ApiClient from '../modules/ApiClient';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: {},
 });
 
 const PostScreen = () => {
-  const onPressPost = () => {
-    // ImagePicker.showImagePicker(options, (response) => {
-    //   console.log('Response = ', response);
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //     alert(response.customButton);
-    //   } else {
-    //     const source = { uri: response.uri };
-    //     // You can also display the image using data:
-    //     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    //     // alert(JSON.stringify(response));s
-    //     console.log('response', JSON.stringify(response));
-    //   }
-    // });
-  };
-
   return (
-    <Screen style={styles.container}>
-      <Text>Post Screen</Text>
-      {/* <TouchableOpacity onPress={onPressPost} /> */}
-    </Screen>
+    <View style={styles.container}>
+      <Text>test</Text>
+    </View>
   );
 };
 

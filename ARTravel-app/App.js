@@ -9,12 +9,17 @@
  */
 'use strict';
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 
 import RouteContainer from './src/RouteContainer';
+import { hasAndroidPermission } from './src/modules/GetPermission';
 
 const App = () => {
+  useEffect(() => {
+    hasAndroidPermission();
+  }, []);
+
   return (
     <RecoilRoot>
       <RouteContainer />

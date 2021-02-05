@@ -80,7 +80,7 @@ const AuthScreen = () => {
     <Screen style={styles.container}>
       <View style={styles.viewContainer}>
         <View style={styles.titleContainer}>
-          <Image source={require('../assets/ARTravel.png')} />
+          <Image source={require('../assets/images/ARTravel.png')} />
           <Text style={styles.titleText}>로그인할 유저를 선택해주세요.</Text>
         </View>
         <Button style={styles.button} onPress={() => onPressButton(0)}>
