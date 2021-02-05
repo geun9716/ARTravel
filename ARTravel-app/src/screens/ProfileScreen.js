@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -49,16 +49,6 @@ const images = [
   "https://cdn.pixabay.com/photo/2018/11/24/02/05/lichterkette-3834926__480.jpg",
   "https://cdn.pixabay.com/photo/2018/11/29/19/29/autumn-3846345__480.jpg",
 ];
-
-imageList = () => {
-  return images.map((image, index) => {
-    return (
-      <View key={index} style={{ width: width / 3, height: width / 3 }}>
-        <Image source={{ uri: image }} style={{ flex: 1 }} />
-      </View>
-    );
-  });
-};
 
 const ProfileScreen = () => {
   const [imageList, setImageList] = useState([]);
