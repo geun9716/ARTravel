@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import Axios from '../../modules/ApiClient';
 import {StyleSheet} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {
@@ -22,43 +23,44 @@ export default class HelloWorldSceneAR extends Component {
     this.state = {
       lat_mobile : 0.0,
       long_mobile : 0.0,
-      text : "Initializing AR...",
-      northPointX: 0,
-      northPointZ: 0,
-      southPointX: 0,
-      southPointZ: 0,
-      eastPointX: 0,
-      eastPointZ: 0,
-      westPointX: 0,
-      westPointZ: 0,
+      posts : [],
     };
 
     // bind 'this' to functions
-    this._onInitialized = this._onInitialized.bind(this);
-    this._latLongToMerc = this._latLongToMerc.bind(this);
-    this._transformPointToAR = this._transformPointToAR.bind(this);
+    // this._onInitialized = this._onInitialized.bind(this);
+    // this._latLongToMerc = this._latLongToMerc.bind(this);
+    // this._transformPointToAR = this._transformPointToAR.bind(this);
   }
 
-  componentDidMount() {
-    var hasLocationPermission = true;
-    if (hasLocationPermission) {
-      Geolocation.getCurrentPosition(
-          (position) => {
-            let gps = position.coords
-            this.setState({lat_mobile : gps.latitude , long_mobile : gps.longitude});
-            console.log(this.state.lat_mobile);
-            console.log(this.state.long_mobile);
-          },
-          (error) => {
-            // See error code charts below.
-            console.log(error.code, error.message);
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-      );
-    }
+  componentDidMount = () => {
+    Geolocation.getCurrentPosition(
+      async (position) => {
+        let gps = position.coords
+        this.setState({lat_mobile : gps.latitude , long_mobile : gps.longitude});
+
+        console.log(this.state.lat_mobile);
+        console.log(this.state.long_mobile);
+
+        await Axios.get(`http://15.164.218.93/api/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
+          .then(response => {
+            console.log(response.data.postInfo);
+            this.setState({posts:response.data.postInfo});
+          }).catch(err=>{
+            console.log(err);
+          });
+      },
+      (error) => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+    
   }
 
   render() {
+    const {posts} = this.state;
+
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized} >
 
@@ -124,29 +126,29 @@ export default class HelloWorldSceneAR extends Component {
     );
   }
 
-  _onInitialized() {
-    const {lat_mobile, long_mobile} = this.state;
-    var northPoint = this._transformPointToAR(lat_mobile, long_mobile);
-    var eastPoint = this._transformPointToAR(lat_mobile, long_mobile);
-    var westPoint = this._transformPointToAR(lat_mobile, long_mobile);
-    var southPoint = this._transformPointToAR(lat_mobile, long_mobile);
+  // _onInitialized() {
+  //   var northPoint = this._transformPointToAR(lat_mobile, long_mobile);
+  //   var eastPoint = this._transformPointToAR(lat_mobile, long_mobile);
+  //   var westPoint = this._transformPointToAR(lat_mobile, long_mobile);
+  //   var southPoint = this._transformPointToAR(lat_mobile, long_mobile);
 
-    console.log("obj north final x:" + northPoint.x + "final z:" + northPoint.z);
-    console.log("obj south final x:" + southPoint.x + "final z:" + southPoint.z);
-    console.log("obj east point x" + eastPoint.x + "final z" + eastPoint.z);
-    console.log("obj west point x" + westPoint.x + "final z" + westPoint.z);
-    this.setState({
-      northPointX: northPoint.x,
-      northPointZ: northPoint.z,
-      southPointX: southPoint.x,
-      southPointZ: southPoint.z,
-      eastPointX: eastPoint.x,
-      eastPointZ: eastPoint.z,
-      westPointX: westPoint.x,
-      westPointZ: westPoint.z,
-      text : "AR Init called."
-    });
-  }
+  //   console.log("obj north final x:" + northPoint.x + "final z:" + northPoint.z);
+  //   console.log("obj south final x:" + southPoint.x + "final z:" + southPoint.z);
+  //   console.log("obj east point x" + eastPoint.x + "final z" + eastPoint.z);
+  //   console.log("obj west point x" + westPoint.x + "final z" + westPoint.z);
+
+  //   this.setState({
+  //     northPointX: northPoint.x,
+  //     northPointZ: northPoint.z,
+  //     southPointX: southPoint.x,
+  //     southPointZ: southPoint.z,
+  //     eastPointX: eastPoint.x,
+  //     eastPointZ: eastPoint.z,
+  //     westPointX: westPoint.x,
+  //     westPointZ: westPoint.z,
+  //     text : "AR Init called."
+  //   });
+  // }
 
   _latLongToMerc(lat_deg, lon_deg) {
     var lon_rad = (lon_deg / 180.0 * Math.PI)
@@ -158,15 +160,29 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _transformPointToAR(lat, long) {
-    var objPoint = this._latLongToMerc(lat, long);
-    var devicePoint = this._latLongToMerc(47.618534, -122.338478);
-    console.log("objPointZ: " + objPoint.y + ", objPointX: " + objPoint.x)
-    // latitude(north,south) maps to the z axis in AR
-    // longitude(east, west) maps to the x axis in AR
-    var objFinalPosZ = objPoint.y - devicePoint.y;
-    var objFinalPosX = objPoint.x - devicePoint.x;
-    //flip the z, as negative z(is in front of us which is north, pos z is behind(south).
-    return ({x:objFinalPosX, z:-objFinalPosZ});
+    const {latMobile, longMobile} = this.state;
+
+    const deviceObjPoint = this.latLongToMerc(lat, long); // see previous post for code.
+    const mobilePoint = this.latLongToMerc(latMobile, longMobile); // see previous post for code.
+
+    const objDeltaY = deviceObjPoint.y - mobilePoint.y;
+    const objDeltaX = deviceObjPoint.x - mobilePoint.x;
+
+    
+    let degree = 90; // not using real compass yet.
+    let angleRadian = (degree * Math.PI) / 180;
+
+    console.log('Using degree => ', degree);
+    console.log('Angle radian => ', angleRadian);
+
+    let newObjX = objDeltaX * Math.cos(angleRadian) - objDeltaY * Math.sin(angleRadian);
+    let newObjY = objDeltaX * Math.sin(angleRadian) + objDeltaY * Math.cos(angleRadian);
+
+    console.log('old delta => ', { x: objDeltaX, z: -objDeltaY });
+    console.log('new delta => ', { x: newObjX, z: -newObjY });
+
+    return { x: newObjX, z: -newObjY };
+
   }
 
   _onClick(){
