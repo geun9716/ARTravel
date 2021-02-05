@@ -3,6 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 
 import Screen from '../components/Screen';
 import ViroARSceneExample from '../ViroExamples/ViroARSceneExample';
+// import ViroARSceneExample2 from '../ViroExamples/ViroARSceneExample2';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
