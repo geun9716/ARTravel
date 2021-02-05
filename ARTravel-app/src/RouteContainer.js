@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { routeNames } from './constants';
-import ARScreen from './screens/ARScreen';
+import FeedScreen from './screens/FeedScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AuthScreen from './screens/AuthScreen';
@@ -39,7 +39,7 @@ const MainTab = () => (
     backBehavior='order'
   >
     <Tab.Screen name={routeNames.POST} component={PostScreen} />
-    <Tab.Screen name={routeNames.AR} component={ARScreen} />
+    <Tab.Screen name={routeNames.FEED} component={FeedScreen} />
     <Tab.Screen name={routeNames.PROFILE} component={ProfileScreen} />
   </Tab.Navigator>
 );
