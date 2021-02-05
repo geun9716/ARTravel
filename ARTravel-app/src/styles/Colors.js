@@ -1,8 +1,9 @@
 const Colors = {
   white: '#fff',
   black: '#000',
-  primaryColor: '#a685e2',
-  secondaryColor: '#ffe6e6',
+  primary: '#0D66CE',
+  primaryText: '#1D1D1D',
+  primaryContrastText: '#FFFFFF',
 };
 
 export default Colors;
