@@ -3,7 +3,6 @@ import httpStatus from 'http-status-codes'
 import security from '../middleware/security'
 import url from 'url'
 import request from 'request'
-var iconv = require('iconv').Iconv
 
 // 게시글 전체 조회
 async function getTourAll (req, res) {
