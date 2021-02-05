@@ -7,9 +7,7 @@ import commentRoute from './comment'
 import notificationRoute from './notification'
 import tourRoute from './tour'
 
-
 const router = express.Router()
-
 
 router.use("/user", userRoute)
 router.use("/post", postRoute)
