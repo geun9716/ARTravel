@@ -1,7 +1,5 @@
 import db from '../middleware/db'
 import httpStatus from 'http-status-codes'
-import security from '../middleware/security'
-import { post } from '../routes/api/post'
 
 async function isLike(req, res) {
     try {

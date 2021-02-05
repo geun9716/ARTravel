@@ -20,6 +20,7 @@ async function login(req, res) {
         if(userInfo.length > 0){
             userInfo = userInfo[0]
             const returnObj = {
+                userId : userInfo.userID,
                 userEmail : userInfo.email,
                 nickname : userInfo.nickname,
                 introduce : userInfo.introduce,
@@ -76,7 +77,33 @@ async function signUp(req, res) {
     }
 }
 
+// 프로필
+async function profile(req, res) {
+    try {
+
+        const userId = req.params.userId
+
+        let userInfo = await db.query('select userID, email, nickname, introduce, followerCount, followingCount from users where userID = ?', [userId])
+
+        let userPost = await db.query('select postID, content, imgPath from posts where userID = ? order by timestamp desc', [userId])
+
+        const returnObj = {
+            userInfo : userInfo,
+            userPost : userPost
+        }
+
+        res.status(httpStatus.OK).send(returnObj)
+
+
+        
+    } catch (error) {
+        console.error(error, "profile api error")
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send([])
+    }
+}
+
 export default {
     login,
-    signUp
+    signUp,
+    profile
 }
