@@ -3,10 +3,10 @@ const router = express.Router();
 import comment from '../../controller/comment'
 
 // 댓글 달기
-router.post('/comment/:userId/:postId', comment.comment)
+router.post('/createComment/:userId/:postId', comment.comment)
 
 // 대댓글 달기
-router.post('/comment/:userId/:postId/:commentId', comment.comments)
+router.post('/createComment/:userId/:postId/:commentId', comment.comments)
 
 // 댓글 수정
 router.post('/updateComment/:commentId', comment.updateComment)
