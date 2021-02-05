@@ -19,7 +19,7 @@
 			"",
 			"const $1 = () => {",
 			"\treturn (",
-			"\t\t<View styles={styles.container}>",
+			"\t\t<View style={styles.container}>",
 			"\t\t\t<Text>test</Text>",
 			"\t\t</View>",
 			"\t);",
