@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const FeedScreen = () => {
+const ARScreen = () => {
   return (
     <Screen style={styles.container}>
-      <Text>Feed Screen</Text>
+      <Text>AR Screen</Text>
     </Screen>
   );
 };
 
-export default FeedScreen;
+export default ARScreen;

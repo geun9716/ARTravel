@@ -3,7 +3,7 @@ export const routeNames = {
   AUTH: 'AUTH',
   MAIN_STACK: 'MAIN_STACK',
   MAIN_TAB: 'MAIN_TAB',
-  FEED: 'FEED',
+  AR: 'AR',
   POST: 'POST',
   PROFILE: 'PROFILE',
 };

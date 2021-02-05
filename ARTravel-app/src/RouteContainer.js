@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { routeNames } from './constants';
-import FeedScreen from './screens/FeedScreen';
+import ARScreen from './screens/ARScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AuthScreen from './screens/AuthScreen';
@@ -20,9 +20,9 @@ const MainTab = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === routeNames.FEED) {
+        if (route.name === routeNames.POST) {
           iconName = !focused ? 'earth' : 'earth-outline';
-        } else if (route.name === routeNames.POST) {
+        } else if (route.name === routeNames.AR) {
           iconName = !focused ? 'add-circle-outline' : 'add-circle';
         } else if (route.name === routeNames.PROFILE) {
           iconName = !focused ? 'person-circle-outline' : 'person-circle';
@@ -34,10 +34,12 @@ const MainTab = () => (
     tabBarOptions={{
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
+      showLabel: false,
     }}
+    backBehavior='order'
   >
-    <Tab.Screen name={routeNames.FEED} component={FeedScreen} />
     <Tab.Screen name={routeNames.POST} component={PostScreen} />
+    <Tab.Screen name={routeNames.AR} component={ARScreen} />
     <Tab.Screen name={routeNames.PROFILE} component={ProfileScreen} />
   </Tab.Navigator>
 );
