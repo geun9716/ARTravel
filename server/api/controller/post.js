@@ -51,7 +51,7 @@ async function createPost(req, res) {
     const userID = req.body.userID;
     const categoryID = req.body.categoryID;
     const content = req.body.content;
-    const imgPath = '/img/'+req.file.filename;
+    const imgPath = 'http://15.164.218.93/images/'+req.file.filename;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
     // console.log(imgPath);
