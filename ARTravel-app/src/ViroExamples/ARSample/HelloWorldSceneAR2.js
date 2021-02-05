@@ -42,7 +42,7 @@ export default class HelloWorldSceneAR extends Component {
       async (position) => {
         let gps = position.coords
         this.setState({lat_mobile : gps.latitude , long_mobile : gps.longitude});
-        ApiClient.get(`/api/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
+        ApiClient.get(`/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
           .then(response => {
             console.log(response.data.postInfo);
             this.setState({posts:response.data.postInfo});
