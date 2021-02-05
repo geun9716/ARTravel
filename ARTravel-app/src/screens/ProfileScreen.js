@@ -57,7 +57,7 @@ const ProfileScreen = () => {
   }, []); // 1회만 실행함을 의미
 
   return (
-    <View>
+    <Screen style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>내 피드</Text>
       </View>
@@ -103,8 +103,7 @@ const ProfileScreen = () => {
           })}
         </View>
       </ScrollView>
-      <Screen style={styles.container}></Screen>
-    </View>
+    </Screen>
   );
 };
 
