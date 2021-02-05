@@ -44,17 +44,18 @@ async function getPost (req, res) {
 
 // 게시글 작성
 async function createPost(req, res) {
+    // console.log(req.body);
+
     const userID = req.body.userID;
     const categoryID = req.body.categoryID;
     const content = req.body.content;
-    const imgPath = req.body.imgPath;
+    const imgPath = '/img/'+req.file.filename;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
-    
+    // console.log(imgPath);
     try {
         let postInfo = await db.query('Insert into posts (userID, categoryID, content, timestamp, imgPath, latitude, longitude) VALUES (?, ?, ?, NOW(), ?, ?, ?)',[userID, categoryID, content, imgPath, latitude, longitude]);
         console.log(postInfo);
-
         if(postInfo.affectedRows > 0){
             const returnObj = {
                 message : 'Success post'
@@ -70,16 +71,20 @@ async function createPost(req, res) {
 }
 
 async function updatePost(req, res) {
+
+    // console.log(req.file);
+    // console.log(req.body);
+
     let id = req.params.id;
+
     const categoryID = req.body.categoryID;
     const content = req.body.content;
-    const imgPath = req.body.imgPath;
+    const imgPath = '/img/'+req.file.filename;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
-    
+    // console.log(imgPath);
     try {
-        let postInfo = await db.query('Update posts SET categoryID=?, content=?, imgPath=?, latitude=?, longitude=? where postID = ?',[categoryID, content, imgPath, latitude, longitude, id]);
-        console.log(postInfo);
+        let postInfo = await db.query('Update posts SET categoryID=?, content=?, imgPath=?, latitude=?, longitude=? where postID = ?',[categoryID, content, imgPath,latitude, longitude, id]);
 
         if(postInfo.affectedRows > 0){
             const returnObj = {
