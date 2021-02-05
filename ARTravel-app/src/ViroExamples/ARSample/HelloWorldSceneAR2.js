@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import {StyleSheet} from 'react-native';
-
+import Geolocation from 'react-native-geolocation-service';
 import {
   ViroARScene,
   ViroText,
@@ -20,6 +20,8 @@ export default class HelloWorldSceneAR extends Component {
     super();
     // Set initial state here
     this.state = {
+      lat_mobile : 0.0,
+      long_mobile : 0.0,
       text : "Initializing AR...",
       northPointX: 0,
       northPointZ: 0,
@@ -35,6 +37,25 @@ export default class HelloWorldSceneAR extends Component {
     this._onInitialized = this._onInitialized.bind(this);
     this._latLongToMerc = this._latLongToMerc.bind(this);
     this._transformPointToAR = this._transformPointToAR.bind(this);
+  }
+
+  componentDidMount() {
+    var hasLocationPermission = true;
+    if (hasLocationPermission) {
+      Geolocation.getCurrentPosition(
+          (position) => {
+            let gps = position.coords
+            this.setState({lat_mobile : gps.latitude , long_mobile : gps.longitude});
+            console.log(this.state.lat_mobile);
+            console.log(this.state.long_mobile);
+          },
+          (error) => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    }
   }
 
   render() {
@@ -104,10 +125,12 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onInitialized() {
-    var northPoint = this._transformPointToAR(47.618574, -122.338475);
-    var eastPoint = this._transformPointToAR(47.618534, -122.338061);
-    var westPoint = this._transformPointToAR(47.618539, -122.338644);
-    var southPoint = this._transformPointToAR(47.618210, -122.338455);
+    const {lat_mobile, long_mobile} = this.state;
+    var northPoint = this._transformPointToAR(lat_mobile, long_mobile);
+    var eastPoint = this._transformPointToAR(lat_mobile, long_mobile);
+    var westPoint = this._transformPointToAR(lat_mobile, long_mobile);
+    var southPoint = this._transformPointToAR(lat_mobile, long_mobile);
+
     console.log("obj north final x:" + northPoint.x + "final z:" + northPoint.z);
     console.log("obj south final x:" + southPoint.x + "final z:" + southPoint.z);
     console.log("obj east point x" + eastPoint.x + "final z" + eastPoint.z);
@@ -150,7 +173,6 @@ export default class HelloWorldSceneAR extends Component {
     console.log('hello world');
     alert('hello world!');
   }
-
 }
 
 var styles = StyleSheet.create({
