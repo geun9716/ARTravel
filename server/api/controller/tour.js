@@ -4,17 +4,20 @@ import security from '../middleware/security'
 
 // 게시글 전체 조회
 async function getTourAll (req, res) {
-    // console.log(req);
+    console.log(req.query);
+
+    let lat = req.query.lat;
+    let long = req.query.long;
+
     try {
-        let tourInfo = await db.query('select * from tours', []);
-        
+        let tourInfo = await db.query('select * FROM (SELECT tourID, latitude, longitude, ( 6371 * acos( cos( radians( ? ) ) * cos( radians( latitude) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians(latitude) ) ) ) AS distance from tours) DATA where DATA.distance < 1', [lat, long, lat]);
         if(tourInfo.length > 0){
             const returnObj = {
                 tourInfo : tourInfo
             }
             res.status(httpStatus.OK).send(returnObj)
         } else{
-            res.status(httpStatus.NOT_FOUND).send()
+            res.status(httpStatus.NOT_FOUND).send({message : 'There is not Data'})
         }
    } catch(error) {
         console.error(error, "tours api error")
