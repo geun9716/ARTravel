@@ -43,8 +43,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(upload.array());
-app.use('/img', express.static(path.join(__dirname, 'upload')));
+//app.use(upload.array());
+//app.use('/img', express.static(path.join(__dirname, 'upload')));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', routes);

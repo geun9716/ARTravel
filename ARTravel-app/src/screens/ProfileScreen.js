@@ -6,9 +6,16 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+  Button,
 } from "react-native";
 import Screen from "../components/Screen";
+import LoadingIndicator from "../components/LoadingIndicator";
 const { width, height } = Dimensions.get("window");
+
+import instance from "../modules/ApiClient";
 
 const styles = StyleSheet.create({
   container: {
@@ -32,34 +39,63 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
   },
+  textInput: {
+    marginTop: 20,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    height: 40,
+    borderRadius: 10,
+    borderColor: "gray",
+    borderWidth: 1,
+  },
 });
 
-const images = [
-  "https://cdn.pixabay.com/photo/2018/11/11/16/51/ibis-3809147__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/11/23/14/19/forest-3833973__480.jpg",
-  "https://cdn.pixabay.com/photo/2019/01/05/17/05/man-3915438__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/12/04/22/38/road-3856796__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/11/04/20/21/harley-davidson-3794909__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/12/25/21/45/crystal-ball-photography-3894871__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/12/29/23/49/rays-3902368__480.jpg",
-  "https://cdn.pixabay.com/photo/2017/05/05/16/57/buzzard-2287699__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/08/06/16/30/mushroom-3587888__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/12/15/02/53/flower-3876195__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/12/16/18/12/open-fire-3879031__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/11/24/02/05/lichterkette-3834926__480.jpg",
-  "https://cdn.pixabay.com/photo/2018/11/29/19/29/autumn-3846345__480.jpg",
-];
-
+const postList = [];
+var selectImage;
 const ProfileScreen = () => {
   const [imageList, setImageList] = useState([]);
+  const userId = 1;
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
+
   useEffect(() => {
-    setImageList(images);
+    const fetchData = async () => {
+      try {
+        const { data } = await instance.get(`/user/profile/${userId}`, {
+          timeout: 5000,
+        });
+        console.log(data.userPost[0].imgPath);
+        for (i in data.userPost) {
+          postList.push(data.userPost[i].imgPath);
+        }
+        setImageList(postList);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
   }, []); // 1회만 실행함을 의미
 
   return (
     <Screen style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>내 피드</Text>
+        {isClicked ? (
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsClicked(false);
+              }}
+              style={{ width: 20, height: 20 }}
+            >
+              <Text>←</Text>
+            </TouchableOpacity>
+            <Text style={styles.headerText}> 포스트</Text>
+          </View>
+        ) : (
+          <Text style={styles.headerText}> 내 피드</Text>
+        )}
       </View>
       <View style={{ flexDirection: "row", paddingTop: 10 }}>
         <View style={{ flex: 1, alignItems: "center" }}>
@@ -89,18 +125,86 @@ const ProfileScreen = () => {
               <Text style={{ fontSize: 10, color: "gray" }}>보낸 하트</Text>
             </View>
           </View>
-          <View style={{ flexDirection: "row" }}></View>
         </View>
       </View>
       <ScrollView>
         <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-          {images.map((image, index) => {
-            return (
-              <View key={index} style={{ width: width / 3, height: width / 3 }}>
-                <Image source={{ uri: image }} style={{ flex: 1 }} />
+          {isLoading ? (
+            <LoadingIndicator />
+          ) : isClicked ? (
+            <ScrollView>
+              <View style={{ width: width, height: width }}>
+                <Image
+                  source={{
+                    uri: selectImage,
+                  }}
+                  style={{ flex: 1 }}
+                />
               </View>
-            );
-          })}
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text>하트</Text>
+                <Text> 10 likes</Text>
+              </View>
+              <Text style={{ marginBottom: 10 }}>인생샷</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김철수
+                </Text>
+                <Text> 좋아~</Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김영희
+                </Text>
+                <Text> 이쁘네 ㅎㅎ</Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김철수
+                </Text>
+                <Text> 좋아~</Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김영희
+                </Text>
+                <Text> 이쁘네 ㅎㅎ</Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김철수
+                </Text>
+                <Text> 좋아~</Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text style={{ fontWeight: "bold", color: "black" }}>
+                  김영희
+                </Text>
+                <Text> 이쁘네 ㅎㅎ</Text>
+              </View>
+              <TextInput
+                style={styles.textInput}
+                placeholder="댓글을 작성해주세요..."
+                // backgroundColor="gray"
+                selectionColor="gray"
+              ></TextInput>
+            </ScrollView>
+          ) : (
+            postList.map((image, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    selectImage = image;
+                    setIsClicked(true);
+                  }}
+                  key={index}
+                  style={{ width: width / 3, height: width / 3 }}
+                >
+                  <Image source={{ uri: image }} style={{ flex: 1 }} />
+                </TouchableOpacity>
+              );
+            })
+          )}
         </View>
       </ScrollView>
     </Screen>

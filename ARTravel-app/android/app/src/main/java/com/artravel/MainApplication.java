@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.horcrux.svg.SvgPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
             new CameraRollPackage(),
             new ImagePickerPackage(),
             new SvgPackage(),
+            new RNFusedLocationPackage(),
             new VectorIconsPackage(),
             new RNScreensPackage(),
             new SafeAreaContextPackage(),
