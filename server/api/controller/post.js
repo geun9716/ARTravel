@@ -4,9 +4,13 @@ import security from '../middleware/security'
 
 // 게시글 조회
 async function getAll (req, res) {
-    // console.log(req);
+    console.log(req.query);
+
+    let lat = req.query.lat;
+    let long = req.query.long;
+
     try {
-        let postInfo = await db.query('select * from posts', []);
+        let postInfo = await db.query('select * FROM (SELECT postID, latitude, longitude, ( 6371 * acos( cos( radians( ? ) ) * cos( radians( latitude) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians(latitude) ) ) ) AS distance from posts) DATA where DATA.distance < 1', [lat, long, lat]);
         
         if(postInfo.length > 0){
             const returnObj = {
@@ -24,7 +28,6 @@ async function getAll (req, res) {
 
 async function getPost (req, res) {
     let id = req.params.id;
-
     try {
         let postInfo = await db.query('select * from posts where postID = ?', [id]);
 
