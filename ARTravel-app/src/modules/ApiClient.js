@@ -1,11 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http:/localhost:8080/api',
-  headers: { 'X-Custom-Header': 'foobar' },
+  baseURL: "http://15.164.218.93/api",
   timeout: 5000,
 });
-
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 export default instance;
