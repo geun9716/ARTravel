@@ -44,7 +44,7 @@ async function getPost (req, res) {
 
 // 게시글 작성
 async function createPost(req, res) {
-    // console.log(req.body);
+    console.log(req);
 
     const userID = req.body.userID;
     const categoryID = req.body.categoryID;
@@ -72,7 +72,7 @@ async function createPost(req, res) {
 
 async function updatePost(req, res) {
 
-    // console.log(req.file);
+    console.log(req);
     // console.log(req.body);
 
     let id = req.params.id;
