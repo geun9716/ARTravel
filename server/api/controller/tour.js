@@ -1,45 +1,61 @@
 import db from '../middleware/db'
 import httpStatus from 'http-status-codes'
 import security from '../middleware/security'
+import url from 'url'
+import request from 'request'
+var iconv = require('iconv').Iconv
 
 // 게시글 전체 조회
 async function getTourAll (req, res) {
-    console.log(req.query);
-
-    let lat = req.query.lat;
-    let long = req.query.long;
-
     try {
-        let tourInfo = await db.query('select * FROM (SELECT tourID, latitude, longitude, ( 6371 * acos( cos( radians( ? ) ) * cos( radians( latitude) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians(latitude) ) ) ) AS distance from tours) DATA where DATA.distance < 1', [lat, long, lat]);
-        if(tourInfo.length > 0){
-            const returnObj = {
-                tourInfo : tourInfo
-            }
-            res.status(httpStatus.OK).send(returnObj)
-        } else{
-            res.status(httpStatus.NOT_FOUND).send({message : 'There is not Data'})
-        }
+        let lat = req.query.lat;
+        let long = req.query.long;
+
+        let urlStr = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey=Hs2OSS5NL7nXRWEIunrpOpThVpkUVxDzebTF6KaXb1TkK8KM7DN%2BR%2FhyKSFuMju8q9%2Bdsp38dN4Oy3vEcTOSDA%3D%3D&contentTypeId=12&mapX=` + lat + `&mapY=` + long + `&radius=1000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1&_type=json`
+        
+        request(urlStr, function (error, response, body) {
+            // parse JSON so we have an object to work with
+            var data = JSON.parse(body);
+            
+            // send data to browser
+            res.send(data.response.body.items.item);
+        });
    } catch(error) {
         console.error(error, "tours api error")
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send([])
    }
 }
 
+
+
 //관광지 조회
 async function getTour (req, res) {
-    let id = req.params.id;
-
+    
     try {
-        let tourInfo = await db.query('select * from tours where tourID = ?', [id]);
+        
+        let lat = req.query.lat;
+        let long = req.query.long;
 
-        if(tourInfo.length > 0){
-            const returnObj = {
-                tourInfo : tourInfo
-            }
-            res.status(httpStatus.OK).send(returnObj)
-        } else{
-            res.status(httpStatus.NOT_FOUND).send()
-        }
+        let urlStr = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey=Hs2OSS5NL7nXRWEIunrpOpThVpkUVxDzebTF6KaXb1TkK8KM7DN%2BR%2FhyKSFuMju8q9%2Bdsp38dN4Oy3vEcTOSDA%3D%3D&contentTypeId=12&mapX=`+ lat +`&mapY=` + long +`&radius=0&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1&_type=json`
+        
+        request(urlStr, function (error, response, body) {
+            // parse JSON so we have an object to work with
+            var data = JSON.parse(body);
+
+            // send data to browser
+            res.send(data.response.body.items);
+        });
+
+        // let tourInfo = await db.query('select * from tours where tourID = ?', [id]);
+
+        // if(tourInfo.length > 0){
+        //     const returnObj = {
+        //         tourInfo : tourInfo
+        //     }
+        //     res.status(httpStatus.OK).send(returnObj)
+        // } else{
+        //     res.status(httpStatus.NOT_FOUND).send()
+        // }
    } catch(error) {
         console.error(error, "tours api error")
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send([])
