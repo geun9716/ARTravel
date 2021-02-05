@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-// import ImagePicker from 'react-native-image-picker';
+import React, { useEffect, useState } from 'react';
+import { Text, StyleSheet, Image } from 'react-native';
 
 import Screen from '../components/Screen';
+import ApiClient from '../modules/ApiClient';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ const PostScreen = () => {
   return (
     <Screen style={styles.container}>
       <Text>Post Screen</Text>
-      <TouchableOpacity onPress={onPressPost} />
+      {/* <TouchableOpacity onPress={onPressPost} /> */}
     </Screen>
   );
 };
