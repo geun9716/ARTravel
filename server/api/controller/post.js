@@ -10,7 +10,7 @@ async function getAll (req, res) {
     let long = req.query.long;
 
     try {
-        let postInfo = await db.query('select * FROM (SELECT postID, latitude, longitude, ( 6371 * acos( cos( radians( ? ) ) * cos( radians( latitude) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians(latitude) ) ) ) AS distance from posts) DATA where DATA.distance < 1', [lat, long, lat]);
+        let postInfo = await db.query('select * FROM (SELECT postID, categoryID, latitude, longitude, ( 6371 * acos( cos( radians( ? ) ) * cos( radians( latitude) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians(latitude) ) ) ) AS distance from posts) DATA where DATA.distance < 1', [lat, long, lat]);
         
         if(postInfo.length > 0){
             const returnObj = {
@@ -47,7 +47,6 @@ async function getPost (req, res) {
 
 // 게시글 작성
 async function createPost(req, res) {
-    console.log(req);
 
     const userID = req.body.userID;
     const categoryID = req.body.categoryID;
