@@ -36,7 +36,6 @@ var HelloWorldSceneAR = createReactClass({
   render: function() {
     return (
       <ViroARScene onTrackingUpdated={this._onTrackingUpdated}>
-        
         <ViroAmbientLight color={"#aaaaaa"} influenceBitMask={1} />
 
         <ViroNode
