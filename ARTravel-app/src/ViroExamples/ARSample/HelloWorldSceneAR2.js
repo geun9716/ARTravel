@@ -5,6 +5,7 @@ import ApiClient from '../../modules/ApiClient';
 import { StyleSheet } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { ViroARScene, ViroNode, Viro3DObject, ViroQuad, ViroAmbientLight, ViroMaterials, ViroAnimations } from 'react-viro';
+import { routeNames } from '../../constants';
 
 export default class HelloWorldSceneAR extends Component {
   constructor() {
@@ -29,7 +30,7 @@ export default class HelloWorldSceneAR extends Component {
     Geolocation.getCurrentPosition(
       async (position) => {
         let gps = position.coords;
-        this.setState({ lat_mobile: gps.latitude, long_mobile: gps.longitude });
+        this.setState({ lat_mobile: 37.2974258285, long_mobile: 127.6599364429 });
         ApiClient.get(`/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
           .then((response) => {
             console.log(response.data.postInfo);
@@ -101,8 +102,9 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onClick(postID) {
-    alert('postID : ' + postID);
-    //게시물 Screen 이동 필요
+    this.props.arSceneNavigator.viroAppProps.navigation.navigate(routeNames.PROFILE, {
+      postID,
+    });
   }
 }
 
