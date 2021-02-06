@@ -70,8 +70,8 @@ const SubmitScreen = ({ route }) => {
 
         formData.append('userID', '1');
         formData.append('categoryID', categoryID);
-        formData.append('longitude', latitude);
-        formData.append('latitude', longitude);
+        formData.append('latitude', latitude);
+        formData.append('longitude', longitude);
         formData.append('content', content);
 
         console.log(formData);
