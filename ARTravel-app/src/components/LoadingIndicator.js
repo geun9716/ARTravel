@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {},

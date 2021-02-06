@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     borderRadius: 8,
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: Colors.border,
   },
   image: {
@@ -29,7 +29,7 @@ const EmojiCategory = ({ style, onPress, categoryID, isFocused }) => {
   const source = getSource();
 
   return (
-    <TouchableOpacity style={[style, styles.container, isFocused && styles.focused]} onPress={onPress}>
+    <TouchableOpacity style={[style, styles.container]} onPress={onPress}>
       <Image style={styles.image} source={source} />
     </TouchableOpacity>
   );

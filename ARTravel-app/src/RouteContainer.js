@@ -11,6 +11,7 @@ import SubmitScreen from './screens/SubmitScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AuthScreen from './screens/AuthScreen';
 import PostScreen from './screens/PostScreen';
+import Colors from './styles/Colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,9 +31,9 @@ const MainTab = () => (
         let iconName;
 
         if (route.name === routeNames.POSTING) {
-          iconName = !focused ? 'earth' : 'earth-outline';
-        } else if (route.name === routeNames.FEED) {
           iconName = !focused ? 'add-circle-outline' : 'add-circle';
+        } else if (route.name === routeNames.FEED) {
+          iconName = !focused ? 'earth' : 'earth-outline';
         } else if (route.name === routeNames.PROFILE) {
           iconName = !focused ? 'person-circle-outline' : 'person-circle';
         }
@@ -41,7 +42,7 @@ const MainTab = () => (
       },
     })}
     tabBarOptions={{
-      activeTintColor: 'tomato',
+      activeTintColor: Colors.prmary,
       inactiveTintColor: 'gray',
       showLabel: false,
     }}
