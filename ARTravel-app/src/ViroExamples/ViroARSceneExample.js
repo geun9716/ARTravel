@@ -11,7 +11,7 @@ const arScenes = {
 };
 
 const ViroARSceneExample = () => {
-  return <ViroARSceneNavigator initialScene={{ scene: arScenes['ARSimpleSample'] }} />;
+  return <ViroARSceneNavigator initialScene={{ scene: arScenes['ARSimpleSample2'] }} />;
 };
 
 export default ViroARSceneExample;

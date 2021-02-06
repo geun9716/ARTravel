@@ -4,11 +4,11 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { useRecoilState } from 'recoil';
 
 import Button from '../components/Button';
+import ApiClient from '../modules/ApiClient';
 import { routeNames } from '../constants';
 import Screen from '../components/Screen';
 import Colors from '../styles/Colors';
-import { userInfoState } from '../recoil/auth';
-import Logo from '../assets/images/logo.svg';
+import { userState } from '../recoil/user';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 
 const AuthScreen = () => {
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
 
   useEffect(() => {
     if (userInfo.isLoggedIn) {
@@ -63,17 +63,27 @@ const AuthScreen = () => {
     }
   }, [userInfo]);
 
-  const onPressButton = (no) => {
+  const onPressLogin = async (no) => {
     // async get user
-    const fetchedUserInfo = {
-      isLoggedIn: true,
-      email: '',
-      uid: '',
-      password: '',
-      nickName: '',
-      introduce: '',
-    };
-    setUserInfo(fetchedUserInfo);
+    const userInfo = no === 0 ? { userEmail: 'example.com', userPw: '1234' } : { userEmail: 'test@example.com', userPw: '1234' };
+    console.log(userInfo);
+
+    try {
+      const { data } = await ApiClient.post('/user/login', userInfo);
+      console.log(data);
+      setUserInfo({ isLoggedIn: true, userId: data.userId });
+    } catch (err) {
+      console.log(err);
+    }
+    // const fetchedUserInfo = {
+    //   isLoggedIn: true,
+    //   email: '',
+    //   uid: '',
+    //   password: '',
+    //   nickName: '',
+    //   introduce: '',
+    // };
+    // setUserInfo(fetchedUserInfo);
   };
 
   return (
@@ -83,16 +93,16 @@ const AuthScreen = () => {
           <Image source={require('../assets/images/ARTravel.png')} />
           <Text style={styles.titleText}>로그인할 유저를 선택해주세요.</Text>
         </View>
-        <Button style={styles.button} onPress={() => onPressButton(0)}>
-          <Text style={styles.buttonText}>Login As User 1</Text>
+        <Button style={styles.button} onPress={() => onPressLogin(0)}>
+          <Text style={styles.buttonText}>Login As User 홍길동</Text>
         </Button>
         <View style={styles.dividerContainer}>
           <View style={styles.divider} />
           <Text style={styles.dividerText}>or</Text>
           <View style={styles.divider} />
         </View>
-        <Button style={styles.button} onPress={() => onPressButton(1)}>
-          <Text style={styles.buttonText}>Login As User 2</Text>
+        <Button style={styles.button} onPress={() => onPressLogin(1)}>
+          <Text style={styles.buttonText}>Login As User 장발장</Text>
         </Button>
       </View>
     </Screen>

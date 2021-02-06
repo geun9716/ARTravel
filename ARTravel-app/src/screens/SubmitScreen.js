@@ -1,11 +1,10 @@
-import CameraRoll from '@react-native-community/cameraroll';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet, Image, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Geolocation from 'react-native-geolocation-service';
 
 import Header from '../components/Header';
-import ImageCard from '../components/ImageCard';
 import Screen from '../components/Screen';
 import ApiClient from '../modules/ApiClient';
 import Colors from '../styles/Colors';
@@ -55,10 +54,42 @@ const SubmitScreen = ({ route }) => {
   const navigation = useNavigation();
 
   const [content, setContent] = useState('');
-  const [categoryID, setCategoryID] = useState(0);
+  const [categoryID, setCategoryID] = useState(1);
 
-  const onPressSubmit = () => {
-    // axios
+  const onPressSubmit = async () => {
+    const formData = new FormData();
+
+    Geolocation.getCurrentPosition(
+      async (position) => {
+        let { latitude, longitude } = position.coords;
+        formData.append('images', {
+          name: 'test.jpg',
+          type: sourceImageInfo.type,
+          uri: sourceImageInfo.image.uri,
+        });
+
+        formData.append('userID', '1');
+        formData.append('categoryID', categoryID);
+        formData.append('longitude', latitude);
+        formData.append('latitude', longitude);
+        formData.append('content', content);
+
+        console.log(formData);
+        try {
+          const { data } = await ApiClient.post('/post', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      (error) => {
+        // See error code charts below.
+        console.error(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+    );
   };
 
   const onPressGoBack = () => {
@@ -87,13 +118,13 @@ const SubmitScreen = ({ route }) => {
         </View>
         <ScrollView>
           <View style={styles.contents}>
-            <TextInput placeholder='사진에 대해서 알려주세요···' value={value} onChangeText={(text) => setContent(text)} />
+            <TextInput placeholder='사진에 대해서 알려주세요···' value={content} onChangeText={(text) => setContent(text)} />
             <View style={styles.categoryPaper}>
               <Text style={styles.categoryText}>추억과 관련된 3D 이모티콘을 골라주세요.</Text>
               <View style={styles.categoryContainer}>
-                <EmojiCategory categoryID={0} onPress={() => setCategoryID(0)} />
                 <EmojiCategory categoryID={1} onPress={() => setCategoryID(1)} />
                 <EmojiCategory categoryID={2} onPress={() => setCategoryID(2)} />
+                <EmojiCategory categoryID={3} onPress={() => setCategoryID(3)} />
               </View>
             </View>
           </View>

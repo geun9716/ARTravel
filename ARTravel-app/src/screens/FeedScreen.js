@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, PermissionsAndroid } from 'react-native';
+
 import Screen from '../components/Screen';
-// import ViroARSceneExample from '../ViroExamples/ViroARSceneExample';
-// import ViroARSceneExample2 from '../ViroExamples/ViroARSceneExample2';
+import ViroARSceneExample from '../ViroExamples/ViroARSceneExample';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,10 +13,17 @@ const styles = StyleSheet.create({
 });
 
 const FeedScreen = () => {
+  useEffect(() => {
+    const getPermission = async () => {
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+    };
+
+    getPermission();
+  }, []);
+
   return (
     <Screen style={styles.container}>
-      <Text>Feed Screen</Text>
-      {/* <ViroARSceneExample /> */}
+      <ViroARSceneExample />
     </Screen>
   );
 };

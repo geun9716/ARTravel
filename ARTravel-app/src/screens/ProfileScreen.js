@@ -1,43 +1,29 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-  TextInput,
-  Button,
-} from "react-native";
-import Screen from "../components/Screen";
-import LoadingIndicator from "../components/LoadingIndicator";
-const { width, height } = Dimensions.get("window");
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Text, StyleSheet, Image, Dimensions, TouchableOpacity, TextInput } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
-import instance from "../modules/ApiClient";
+import Screen from '../components/Screen';
+import LoadingIndicator from '../components/LoadingIndicator';
+import instance from '../modules/ApiClient';
+import Header from '../components/Header';
+import Colors from '../styles/Colors';
+import { routeNames } from '../constants';
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   wrap: {
     flex: 1,
   },
-  header: {
-    height: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: "gray",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
+  headerButton: {
+    padding: 5,
   },
   headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
+    color: Colors.black,
   },
   textInput: {
     marginTop: 20,
@@ -45,7 +31,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 40,
     borderRadius: 10,
-    borderColor: "gray",
+    borderColor: 'gray',
     borderWidth: 1,
   },
 });
@@ -62,9 +48,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await instance.get(`/user/profile/${userId}`, {
-          timeout: 5000,
-        });
+        const { data } = await instance.get(`/user/profile/${userId}`);
         console.log(data.userPost[0].imgPath);
         for (i in data.userPost) {
           postList.push(data.userPost[i].imgPath);
@@ -80,55 +64,34 @@ const ProfileScreen = () => {
 
   return (
     <Screen style={styles.container}>
-      <View style={styles.header}>
-        {isClicked ? (
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
-              onPress={() => {
-                setIsClicked(false);
-              }}
-              style={{ width: 20, height: 20 }}
-            >
-              <Text>←</Text>
-            </TouchableOpacity>
-            <Text style={styles.headerText}> 포스트</Text>
-          </View>
-        ) : (
-          <Text style={styles.headerText}> 내 피드</Text>
-        )}
-      </View>
-      <View style={{ flexDirection: "row", paddingTop: 10 }}>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Image
-            source={{ uri: "https://steemitimages.com/u/anpigon/avatar" }}
-            style={{ width: 75, height: 75, borderRadius: 37.5 }}
-          />
+      {isClicked ? <Header title={'포스트'} left={<Icon onPress={() => setIsClicked(false)} style={styles.headerButton} name='close' size={20} />} /> : <Header title={'내 피드'} />}
+      <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Image source={{ uri: 'https://steemitimages.com/u/anpigon/avatar' }} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
         </View>
         <View style={{ flex: 3 }}>
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ color: "black" }}>홍길동</Text>
-            <Text style={{ fontSize: 10, color: "gray" }}>Traveler</Text>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={{ color: 'black' }}>홍길동</Text>
+            <Text style={{ fontSize: 10, color: 'gray' }}>Traveler</Text>
           </View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "black" }}>50</Text>
-              <Text style={{ fontSize: 10, color: "gray" }}>남긴 AR</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ color: 'black' }}>50</Text>
+              <Text style={{ fontSize: 10, color: 'gray' }}>남긴 AR</Text>
             </View>
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "black" }}>336</Text>
-              <Text style={{ fontSize: 10, color: "gray" }}>받은 하트</Text>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ color: 'black' }}>336</Text>
+              <Text style={{ fontSize: 10, color: 'gray' }}>받은 하트</Text>
             </View>
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "black" }}>1061</Text>
-              <Text style={{ fontSize: 10, color: "gray" }}>보낸 하트</Text>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ color: 'black' }}>1061</Text>
+              <Text style={{ fontSize: 10, color: 'gray' }}>보낸 하트</Text>
             </View>
           </View>
         </View>
       </View>
       <ScrollView>
-        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {isLoading ? (
             <LoadingIndicator />
           ) : isClicked ? (
@@ -141,52 +104,40 @@ const ProfileScreen = () => {
                   style={{ flex: 1 }}
                 />
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 <Text>하트</Text>
                 <Text> 10 likes</Text>
               </View>
               <Text style={{ marginBottom: 10 }}>인생샷</Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김철수
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
                 <Text> 좋아~</Text>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김영희
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
                 <Text> 이쁘네 ㅎㅎ</Text>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김철수
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
                 <Text> 좋아~</Text>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김영희
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
                 <Text> 이쁘네 ㅎㅎ</Text>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김철수
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
                 <Text> 좋아~</Text>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  김영희
-                </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
                 <Text> 이쁘네 ㅎㅎ</Text>
               </View>
               <TextInput
                 style={styles.textInput}
-                placeholder="댓글을 작성해주세요..."
+                placeholder='댓글을 작성해주세요...'
                 // backgroundColor="gray"
-                selectionColor="gray"
+                selectionColor='gray'
               ></TextInput>
             </ScrollView>
           ) : (

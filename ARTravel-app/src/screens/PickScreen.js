@@ -1,6 +1,6 @@
 import CameraRoll from '@react-native-community/cameraroll';
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet, Image, View, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 

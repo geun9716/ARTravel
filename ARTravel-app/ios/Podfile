@@ -22,4 +22,6 @@ target 'ARTravel' do
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
   pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
 end
