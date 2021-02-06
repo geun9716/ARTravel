@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const CategoryIDToString = {
+  1: '여행',
+  2: '인생샷',
+  3: '커플',
+};
+
 const PostScreen = ({ route }) => {
   const [postInfo, setPostInfo] = useState([]);
   const { postID } = route.params;
@@ -87,10 +93,10 @@ const PostScreen = ({ route }) => {
           />
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          <Text>하트</Text>
+          <Text>좋아요</Text>
           <Text>{postInfo.likeCount}</Text>
         </View>
-        <Text style={{ marginBottom: 10 }}>인생샷</Text>
+        <Text style={{ marginBottom: 10 }}>{CategoryIDToString[postInfo.categoryID]}</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
           <Text> 좋아~</Text>
