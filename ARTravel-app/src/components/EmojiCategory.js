@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
 
 const EmojiCategory = ({ style, onPress, categoryID, isFocused }) => {
   const getSource = () => {
-    if (categoryID === 0) {
-      return require('../assets/images/ARTravel.png');
-    } else if (categoryID === 1) {
-      return require('../assets/images/ARTravel.png');
+    if (categoryID === 1) {
+      return require('../assets/images/bag.png');
     } else if (categoryID === 2) {
-      return require('../assets/images/ARTravel.png');
+      return require('../assets/images/cam.png');
+    } else if (categoryID === 3) {
+      return require('../assets/images/heart.png');
     }
   };
 
