@@ -10,8 +10,8 @@ const arScenes = {
   BusinessCard: require('./ARBusinessCard/BusinessCard.js'),
 };
 
-const ViroARSceneExample = () => {
-  return <ViroARSceneNavigator initialScene={{ scene: arScenes['ARSimpleSample2'] }} />;
+const ViroARSceneExample = ({ navigation }) => {
+  return <ViroARSceneNavigator initialScene={{ scene: arScenes['ARSimpleSample2'] }} viroAppProps={{ navigation }} />;
 };
 
 export default ViroARSceneExample;

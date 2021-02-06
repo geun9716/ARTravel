@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, PermissionsAndroid } from 'react-native';
+import { StyleSheet, PermissionsAndroid, Image } from 'react-native';
 
 import Screen from '../components/Screen';
 import ViroARSceneExample from '../ViroExamples/ViroARSceneExample';
@@ -10,9 +10,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logo: {
+    resizeMode: 'contain',
+    height: 40,
+  },
 });
 
-const FeedScreen = () => {
+const FeedScreen = ({ navigation }) => {
   useEffect(() => {
     const getPermission = async () => {
       await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -23,7 +27,8 @@ const FeedScreen = () => {
 
   return (
     <Screen style={styles.container}>
-      <ViroARSceneExample />
+      <Image style={styles.logo} source={require('../assets/images/ARTravel.png')} />
+      <ViroARSceneExample navigation={navigation} />
     </Screen>
   );
 };
