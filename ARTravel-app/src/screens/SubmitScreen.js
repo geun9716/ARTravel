@@ -79,6 +79,8 @@ const SubmitScreen = ({ route }) => {
           const { data } = await ApiClient.post('/post', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           });
+
+          navigation.navigate(routeNames.FEED);
           console.log(data);
         } catch (error) {
           console.log(error);
