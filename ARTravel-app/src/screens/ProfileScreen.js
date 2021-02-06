@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet, Image, Dimensions, TouchableOpacity, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 import Screen from '../components/Screen';
@@ -36,22 +35,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const postList = [];
-var selectImage;
 const ProfileScreen = () => {
-  const [imageList, setImageList] = useState([]);
   const userId = 1;
+  const navigation = useNavigation();
 
+  const [imageList, setImageList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const postList = [];
         const { data } = await instance.get(`/user/profile/${userId}`);
-        console.log(data.userPost[0].imgPath);
+        console.log(data);
         for (i in data.userPost) {
-          postList.push(data.userPost[i].imgPath);
+          postList.push(data.userPost[i]);
         }
         setImageList(postList);
         setIsLoading(false);
@@ -64,7 +62,7 @@ const ProfileScreen = () => {
 
   return (
     <Screen style={styles.container}>
-      {isClicked ? <Header title={'포스트'} left={<Icon onPress={() => setIsClicked(false)} style={styles.headerButton} name='close' size={20} />} /> : <Header title={'내 피드'} />}
+      <Header title={'내 피드'} />
       <View style={{ flexDirection: 'row', paddingTop: 10 }}>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Image source={{ uri: 'https://steemitimages.com/u/anpigon/avatar' }} style={{ width: 75, height: 75, borderRadius: 37.5 }} />
@@ -94,64 +92,19 @@ const ProfileScreen = () => {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {isLoading ? (
             <LoadingIndicator />
-          ) : isClicked ? (
-            <ScrollView>
-              <View style={{ width: width, height: width }}>
-                <Image
-                  source={{
-                    uri: selectImage,
-                  }}
-                  style={{ flex: 1 }}
-                />
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text>하트</Text>
-                <Text> 10 likes</Text>
-              </View>
-              <Text style={{ marginBottom: 10 }}>인생샷</Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
-                <Text> 좋아~</Text>
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
-                <Text> 이쁘네 ㅎㅎ</Text>
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
-                <Text> 좋아~</Text>
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
-                <Text> 이쁘네 ㅎㅎ</Text>
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김철수</Text>
-                <Text> 좋아~</Text>
-              </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black' }}>김영희</Text>
-                <Text> 이쁘네 ㅎㅎ</Text>
-              </View>
-              <TextInput
-                style={styles.textInput}
-                placeholder='댓글을 작성해주세요...'
-                // backgroundColor="gray"
-                selectionColor='gray'
-              ></TextInput>
-            </ScrollView>
           ) : (
-            postList.map((image, index) => {
+            imageList.map((image, index) => {
               return (
                 <TouchableOpacity
-                  onPress={() => {
-                    selectImage = image;
-                    setIsClicked(true);
-                  }}
+                  onPress={() =>
+                    navigation.navigate(routeNames.POST, {
+                      postID: image.postID,
+                    })
+                  }
                   key={index}
                   style={{ width: width / 3, height: width / 3 }}
                 >
-                  <Image source={{ uri: image }} style={{ flex: 1 }} />
+                  <Image source={{ uri: image.imgPath }} style={{ flex: 1 }} />
                 </TouchableOpacity>
               );
             })

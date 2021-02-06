@@ -30,7 +30,7 @@ export default class HelloWorldSceneAR extends Component {
     Geolocation.getCurrentPosition(
       async (position) => {
         let gps = position.coords;
-        this.setState({ lat_mobile: 37.2974258285, long_mobile: 127.6599364429 });
+        this.setState({ lat_mobile: gps.latitude, long_mobile: gps.longitude });
         ApiClient.get(`/post?lat=${this.state.lat_mobile}&long=${this.state.long_mobile}`)
           .then((response) => {
             console.log(response.data.postInfo);
@@ -102,7 +102,7 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   _onClick(postID) {
-    this.props.arSceneNavigator.viroAppProps.navigation.navigate(routeNames.PROFILE, {
+    this.props.arSceneNavigator.viroAppProps.navigation.navigate(routeNames.POST, {
       postID,
     });
   }
