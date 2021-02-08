@@ -33,7 +33,7 @@ async function query(sql, args) {
         } catch(err) {
             console.error(err)
 
-            resolve([])
+            resolve(err)
         }
     })
 }

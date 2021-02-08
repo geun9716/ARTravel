@@ -1,0 +1,43 @@
+{
+  "name": "ARTravel",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "prestart": "./node_modules/react-viro/bin/run_ngrok.sh",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "postinstall": "react-native link",
+    "test": "jest",
+    "android": "react-native run-android --variant=gvrDebug",
+    "clean-android": "cd android && ./gradlew clean && cd .."
+  },
+  "dependencies": {
+    "@react-native-community/cameraroll": "^4.0.2",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.11.7",
+    "@react-navigation/native": "^5.9.2",
+    "@react-navigation/stack": "^5.14.2",
+    "axios": "^0.21.1",
+    "react": "16.8.3",
+    "react-native": "0.59.3",
+    "react-native-geolocation-service": "^5.2.0",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-image-picker": "^3.1.4",
+    "react-native-reanimated": "^1.13.2",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-screens": "^2.17.1",
+    "react-native-svg": "^12.1.0",
+    "react-native-svg-transformer": "^0.14.3",
+    "react-native-vector-icons": "^8.0.0",
+    "react-viro": "2.17.0",
+    "recoil": "^0.1.2"
+  },
+  "devDependencies": {
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
